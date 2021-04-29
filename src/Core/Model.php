@@ -79,7 +79,10 @@ class Model extends \Illuminate\Database\Eloquent\Model {
 			->where(function($query) use ($title) {
 				if ( $title )
 					$query->where('title', 'LIKE', "%$title%");
-			});
+			})->where(function($query){
+			    if (!auth()->user()->ableTo('manage-all-media'))
+			        $query->where('owner_id', auth()->id());
+            });
 
 		return [
 			'total' => (clone $data)->count(),
@@ -89,5 +92,12 @@ class Model extends \Illuminate\Database\Eloquent\Model {
 			                ->get() ?? []
 		];
 	}
+
+	protected static function booted()
+    {
+        static::creating(function($model){
+           $model->owner_id = auth()->id();
+        });
+    }
 
 }

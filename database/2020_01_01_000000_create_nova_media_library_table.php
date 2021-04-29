@@ -23,6 +23,7 @@ class CreateNovaMediaLibraryTable extends Migration
 	        $table->boolean('private')->default(0);
 	        $table->boolean('lp')->default(0);
 	        $table->text('options')->nullable();
+	        $table->unsignedBigInteger('owner_id');
         });
     }
 
