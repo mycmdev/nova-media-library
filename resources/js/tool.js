@@ -1,13 +1,13 @@
 Nova.booting((Vue, router, store) => {
-  Vue.component('index-media-library-field', require('./field/Index/'));
-  Vue.component('detail-media-library-field', require('./field/Detail/'));
-  Vue.component('form-media-library-field', require('./field/Form/'));
+  Vue.component('index-media-library-field', require('./field/Index/index.vue').default);
+  Vue.component('detail-media-library-field', require('./field/Detail/index.vue').default);
+  Vue.component('form-media-library-field', require('./field/Form/index.vue').default);
 
   router.addRoutes([
     {
       name: 'nova-media-library',
       path: '/media-library',
-      component: require('./tool/'),
+      component: require('./tool/index.vue').default,
     },
   ]);
 

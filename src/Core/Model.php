@@ -2,6 +2,7 @@
 
 namespace ClassicO\NovaMediaLibrary\Core;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -26,7 +27,7 @@ class Model extends \Illuminate\Database\Eloquent\Model {
 
 	protected $fillable = ['id', 'title', 'created', 'type', 'folder', 'name', 'private', 'lp', 'options'];
 
-	protected $appends = ['url', 'path'];
+	protected $appends = ['url', 'path', 'owner_name'];
 
 	protected $casts = [
 		'created' => 'datetime',
@@ -92,6 +93,12 @@ class Model extends \Illuminate\Database\Eloquent\Model {
 			                ->get() ?? []
 		];
 	}
+
+    protected function getOwnerNameAttribute()
+    {
+        return User::where('id', $this->attributes['owner_id'])->first()->email;
+    }
+
 
 	protected static function booted()
     {
