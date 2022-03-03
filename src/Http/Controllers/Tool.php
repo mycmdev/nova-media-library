@@ -87,6 +87,10 @@ class Tool {
 
 	function delete(DeleteFr $fr)
 	{
+	    if(!auth()->user()->ableTo('delete-files')){
+	        return [ 'status' => false ];
+        }
+
 		$get = Model::find(request('ids'));
 		$delete = Model::whereIn('id', request('ids'))->delete();
 
