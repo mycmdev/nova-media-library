@@ -47,6 +47,9 @@ class Tool {
 		if ( !$item or !$item->path )
 			return response()->noContent(404);
 
+		if ( !auth()->user()->ableTo('manage-all-media') and $item->owner_id != auth()->id() )
+			return response()->noContent(404);
+
 		if ( !in_array($size, data_get($item, 'options.img_sizes', [])) ) $size = null;
 
 		return API::getPrivateFile($item->path, $size);
@@ -91,8 +94,12 @@ class Tool {
 	        return [ 'status' => false ];
         }
 
-		$get = Model::find(request('ids'));
-		$delete = Model::whereIn('id', request('ids'))->delete();
+		$query = Model::whereIn('id', request('ids'));
+		if ( !auth()->user()->ableTo('manage-all-media') )
+			$query->where('owner_id', auth()->id());
+
+		$get = (clone $query)->get();
+		$delete = $query->delete();
 
 		if ( count($get) > 0 ) {
 			$array = [];
@@ -118,6 +125,9 @@ class Tool {
 	{
 		$item = Model::find(request('id'));
 		if ( !$item ) abort(422, __('Invalid id'));
+
+		if ( !auth()->user()->ableTo('manage-all-media') and $item->owner_id != auth()->id() )
+			abort(403);
 
 		$item->title = request('title');
 		$img_sizes = data_get($item->options, 'img_sizes', []);

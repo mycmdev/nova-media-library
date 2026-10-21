@@ -1,5 +1,6 @@
 {
     "name": "classic-o/nova-media-library",
+    "version": "1.0.9",
     "description": "Tool and field that will let you managing files and add them to the posts",
     "keywords": ["laravel", "nova", "media", "gallery"],
     "license": "MIT",
