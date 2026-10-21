@@ -96,7 +96,7 @@ class Model extends \Illuminate\Database\Eloquent\Model {
 
     protected function getOwnerNameAttribute()
     {
-        return User::where('id', $this->attributes['owner_id'])->first()->email;
+        return optional(User::find($this->attributes['owner_id'] ?? null))->email;
     }
 
 
